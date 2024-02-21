@@ -1,5 +1,4 @@
-
-const testE1 = document.querySelector('.timer')
+const timerEl = document.getElementById('timer')
 const mainEl = document.getElementById('quiz')
 let secondsLeft = 60;
 let currentQuestion = 0;
@@ -7,17 +6,19 @@ const questionElement = document.querySelector('.question');
 const optionsElement = document.querySelector('.options');
 const answerElement = document.querySelector('.answers');
 let quizCompleted = false; // Flag to track if quiz is completed
+let testScore = 0;
 
 function countdownTimer() {
   // Sets interval in variable
-  var timerInterval = setInterval(function() {
+  const timerInterval = setInterval(function() {
     secondsLeft--;
-    testE1.textContent = 'Timer:' + secondsLeft;
+   
+    timerEl.textContent = 'Timer:' + secondsLeft;
 
     if(secondsLeft === 0) {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
-      // Calls function to create and append image
+      // Calls function to 
       overMessage();
     }
 
@@ -25,8 +26,8 @@ function countdownTimer() {
 }
 
 function overMessage() {
-  var testOver = document.createElement('H1');
-  testOver.setAttribute('Testing Time Complete');
+  const testOver = document.createElement('H1');
+  testOver.textContent = 'Testing Time Complete';
   mainEl.appendChild(testOver);
 }
 
@@ -52,24 +53,27 @@ const quizData = [
 
 
   function loadQuestion() {
-    const currentQuizData = quizData[currentQuestion];
-    questionElement.textContent = currentQuizData.question;
+    const currentQuestionData = quizData[currentQuestion];
+    questionElement.textContent = currentQuestionData.question;
     optionsElement.innerHTML = '';
-    currentQuizData.options.forEach(option => {
-      const li = document.createElement('button');
-      li.textContent = option;
-      li.classList.add('option');
-      li.addEventListener('click', checkAnswer);
-      optionsElement.appendChild(li);
+    currentQuestionData.options.forEach(option => {
+      const ansButton = document.createElement('button');
+      ansButton.textContent = option;
+      ansButton.classList.add('option');
+      ansButton.addEventListener('click', checkAnswer);
+      optionsElement.appendChild(ansButton);
     });
   }
 
   function checkAnswer(event) {
     const selectedOption = event.target.textContent;
     const correctAnswer = quizData[currentQuestion].answer;
+    const tScoreEl = document.querySelector('#t-score')
     if (selectedOption === correctAnswer) {
       answerElement.textContent = 'Correct!';
       setTimeout(nextQuestion, 1000); // Display correct message for 1 second before moving to next question
+      testScore++
+      tScoreEl.textContent = testScore;
     } else {
       answerElement.textContent = 'Wrong Answer!';
       setTimeout(nextQuestion, 1000); // Display wrong message for 1 second before moving to next question
