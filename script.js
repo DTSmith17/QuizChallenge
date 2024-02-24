@@ -39,14 +39,29 @@ const quizData = [
       answer: "Strings"
     },
     {
-      question: "What is the largest planet in our solar system?",
-      options: ["Mars", "Venus", "Jupiter", "Saturn"],
-      answer: "Jupiter"
+      question: "Which of these elements in HTML can be used for making a text bold?",
+      options: ["<a>", "<pre>", "<br>", "<b>"],
+      answer: "<b>"
     },
     {
-      question: "What is the powerhouse of the cell?",
-      options: ["Mitochondria", "Nucleus", "Ribosome", "Endoplasmic reticulum"],
-      answer: "Mitochondria"
+      question: " In HTML, how do we insert an image?",
+      options: ["<img src = “jtp.png” />", "<img href = “jtp.png” />", "<img link = “jtp.png” />", "<img url = “jtp.png” />"],
+      answer: "<img src = “jtp.png” />"
+    },
+    {
+      question: " In HTML, the tags are __________.",
+      options: ["in upper case", "case-sensitive", "in lowercase", "not case sensitive"],
+      answer: "not case sensitive"
+    },
+    {
+      question: "Which tag is used in HTML5 for the initialization of the document type?",
+      options: ["<Doctype HTML>", "<!DOCTYPE html>", "<Doctype>", "<\Doctype html>"],
+      answer: "<!DOCTYPE html>"
+    },
+    {
+      question: "Which one is the HTML document’s root tag?",
+      options: ["<head>", "<body>", "<title>", "<html>"],
+      answer: "<html>"
     }
   ];
 
@@ -81,19 +96,10 @@ const quizData = [
     }
   }
 
-  function saveScore(initials) {
-    if (quizCompleted) return; // Do not save score if quiz is already completed
-    
-    const scores = [];
-    const correctAnswers = quizData.filter(question => question.result === 'Correct').length;
-    const totalQuestions = quizData.length;
-    const percentageCorrect = (correctAnswers / totalQuestions) * 100;
-    const score = percentageCorrect >= 80 ? 'Pass' : 'Fail';
-  
-    scores.push({ initials: initials, score: score });
-    localStorage.setItem('quizScores', JSON.stringify(scores));
-  
-    quizCompleted = true; // Set quizCompleted to true after saving the final score
+  function saveScore(initials, score) {
+    const scoreList = JSON.parse(localStorage.getItem('quizScores')) ?? []
+    scoreList.push({initials, score})
+    localStorage.setItem('quizScores', JSON.stringify(scoreList))
   }
   
  
@@ -106,7 +112,7 @@ const quizData = [
     } else {
       const initials = prompt('Enter your initials:'); // Prompt user to enter initials
       if (initials) { // Proceed only if the user enters initials
-        saveScore(initials, true); // Save the score as correct for the completed quiz
+        saveScore(initials, testScore); // Save the score as correct for the completed quiz
         window.location.href = 'scores.html'; // Redirect to view scores page
       } else {
         alert("End of Quiz!");
